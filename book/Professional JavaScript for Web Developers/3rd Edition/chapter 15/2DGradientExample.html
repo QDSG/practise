@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D Gradient Example</title>
+    </head>
+    <body>
+        <canvas id="can" width="400" height="400"></canvas>
+        <input type="button" id="export-but" value="导出">
+        <script>
+            window.onload = function(){
+                var drawing = document.getElementById("can");
+                var but = document.getElementById("export-but");
+                if(drawing.getContext) {
+                    but.onclick = function() {
+                        // 取得图像的数据URL
+                        var imgURL = drawing.toDataURL();
+        
+                        // 显示图像
+                        var image1 = document.createElement("img");
+                        image1.src = imgURL;
+                        document.body.appendChild(image1);
+                    }
+
+                    var context = drawing.getContext("2d");
+
+                    const RECT_WIDTH = 50;
+                    const RECT_HEIGHT = 50;
+
+                    var gradient = context.createLinearGradient(30, 30, 70, 70);
+
+                    function addColorStop(grad) {
+                        grad.addColorStop(0, "white");
+                        grad.addColorStop(1, "red");
+                    }
+
+                    var x = 10;
+                    var y = 10;
+                    function fillStyleRect(cont, sty) {
+                        cont.fillStyle = sty;
+                        cont.fillRect(x, y, RECT_WIDTH, RECT_HEIGHT);
+                        x += 20;
+                        y += 20;
+                    }
+
+                    // 绘制蓝色矩形
+                    fillStyleRect(context, "#0000ff");
+
+                    // 绘制渐变矩形
+                    addColorStop(gradient);
+                    fillStyleRect(context, gradient);
+
+                    // 确保渐变与形状对齐非常重要，有时候可以考虑使用函数来确保坐标合适。
+                    gradient = function(context, x, y, width, height){
+                        return context.createLinearGradient(x, y, x + width, y + height);
+                    }(context, x, y, RECT_WIDTH, RECT_HEIGHT);
+                    addColorStop(gradient);
+                    fillStyleRect(context, gradient);
+
+                    // 起点圆的原心（x 和 y）及半径、终点圆的原心（x 和 y）及半径
+                    let radiolX = x + RECT_WIDTH / 2;
+                    let radiolY = y +RECT_HEIGHT / 2;
+                    gradient = context.createRadialGradient(radiolX, radiolY, 10, radiolX, radiolY, 30);
+                    addColorStop(gradient);
+                    fillStyleRect(context, gradient);
+                }             
+            };
+        </script>
+    </body>
+</html>

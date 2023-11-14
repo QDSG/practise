@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D Shadow Example</title>
+    </head>
+    <body>
+        <canvas id="can" width="400" height="400"></canvas>
+        <img id="smiley" src="psc.jpg" border="1" />
+        <input type="button" id="export-but" value="导出">
+        <script>
+            window.onload = function(){
+                var drawing = document.getElementById("can");
+                var but = document.getElementById("export-but");
+                if(drawing.getContext) {
+                    but.onclick = function() {
+                        // 取得图像的数据URL
+                        var imgURL = drawing.toDataURL();
+        
+                        // 显示图像
+                        var image1 = document.createElement("img");
+                        image1.src = imgURL;
+                        document.body.appendChild(image1);
+                    }
+
+                    var context = drawing.getContext("2d");
+
+                    // 设置阴影
+                    context.shadowOffsetX = 5;
+                    context.shadowOffsetY = 10;
+                    context.shadowBlur = 4;
+                    context.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+                    // 绘制红色矩形
+                    context.fillStyle = "#ff0000";
+                    context.fillRect(10, 10, 50, 50);
+
+                    // 绘制蓝色矩形
+                    context.fillStyle = "#0000ff";
+                    context.fillRect(30, 30, 50, 50);
+                }             
+            };
+        </script>
+    </body>
+</html>

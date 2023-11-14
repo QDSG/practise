@@ -1,0 +1,86 @@
+<!DOCTYPE html><!DOCTYPE html>
+<html>
+    <head>
+        <title>2D Global Alpha Example</title>
+    </head>
+    <body>
+        <canvas id="can" width="800" height="400"></canvas>
+        <!-- <img id="smiley" src="https://t7.baidu.com/it/u=2621658848,3952322712&fm=193&f=GIF" border="1" /> -->
+        <input type="button" id="export-but" value="导出">
+        <script>
+            window.onload = function(){
+                var drawing = document.getElementById("can");
+                var but = document.getElementById("export-but");
+                if(drawing.getContext) {
+                    but.onclick = function() {
+                        // 取得图像的数据URL
+                        var imgURL = drawing.toDataURL();
+        
+                        // 显示图像
+                        var image1 = document.createElement("img");
+                        image1.src = imgURL;
+                        document.body.appendChild(image1);
+                    }
+
+                    var context = drawing.getContext("2d");
+
+                    // 绘制红色矩形
+                    context.fillStyle = "#ff0000";
+                    context.fillRect(10, 10, 50, 50);
+
+                    // 修改全局透明度
+                    // globalAlpha 是一个介于 0 和 1 之间的值（包括 0 和 1)
+                    context.globalAlpha = 0.1;
+
+                    // 绘制蓝色矩形
+                    context.fillStyle = "rgba(0, 0, 255, 1)";
+                    context.fillRect(30, 30, 50, 50);
+
+                    // 修改全局透明度
+                    context.globalAlpha = 0;
+
+                    // 重置画布透明度
+                    context.globalAlpha = 1;
+
+                    var arr = [
+                        "source-over",      //(默认值）后绘制的图形位于先绘制的图形上方。
+                        "source-in",        //后绘制的图形与先绘制的图形重叠的部分可见，两者其他部分完全透明。
+                        "source-out",       //后绘制的图形与先绘制的图形不重叠的部分可见，先绘制的图形完全透明。
+                        "source-atop",      //后绘制的图形与先绘制的图形重叠的部分可见，先绘制图形不受影响。
+                        "destination-over",     //后绘制的图形位于先绘制的图形下方，只有之前透明像素下的部分才可见。
+                        "destination-in",       //后绘制的图形位于先绘制的图形下方，两者不重叠的部分完全透明。
+                        "destination-out",      //后绘制的图形擦除与先绘制的图形重叠的部分。
+                        "destination-atop",     //绘制的图形位于先绘制的图形下方，在两者不重叠的地方，先绘制的图形会变透明。
+                        "lighter",      //后绘制的图形与先绘制的图形重叠部分的值相加，使该部分变亮。
+                        "copy",     //后绘制的图形完全替代与之重叠的先绘制图形。
+                        "xor",      //后绘制的图形与先绘制的图形重叠的部分执行“异或”操作。
+                    ];
+                    let x = 10, y = 110;
+                    const SIZE = 50;        //矩形的尺寸
+                    const GAP = 20;
+                    function add() {
+                        if(x > 580) {  x = 10; y += 100; return;};
+                        x += 100;
+                    }
+                    for (let i = 0; i < arr.length; i++) {
+                        
+                        // 绘制红色矩形
+                        context.fillStyle = "#ff0000";
+                        context.fillRect(x, y, SIZE, SIZE);
+
+                        // 修改全局透明度
+                        // globalCompositionOperation 表示后绘制的图形怎样与先绘制的图形结合。
+                        context.globalCompositeOperation = arr[i];
+
+                        // 绘制蓝色矩形
+                        context.fillStyle = "rgba(0, 0, 255, 1)";
+                        context.fillRect(x + GAP, y + GAP, SIZE, SIZE);
+                        context.globalCompositeOperation = "source-over";
+                        add();
+                    }
+
+                }             
+            };
+        </script>
+    </body>
+</html>

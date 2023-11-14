@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D FillText Example</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="can" width="400" height="400"></canvas>
+        <input type="button" id="export-but" value="导出">
+        <script>
+            var drawing = document.getElementById("can");
+            var but = document.getElementById("export-but");
+            if(drawing.getContext) {
+                but.onclick = function() {
+                    // 取得图像的数据URL
+                    var imgURL = drawing.toDataURL();
+    
+                    // 显示图像
+                    var image1 = document.createElement("img");
+                    image1.src = imgURL;
+                    document.body.appendChild(image1);
+                }
+
+                var context = drawing.getContext("2d");
+
+                var fontSize = 100;
+                context.font = fontSize + "px Arial";
+                while (context.measureText("hello world!").width > 140) {
+                    fontSize--;
+                    context.font = fontSize + "px Arial";
+                }
+                context.fillText("Hello world!", 150, 300);
+                context.fillText("Font size is " + fontSize + "px", 150, 350);
+            }
+        </script>
+    </body>
+</html>

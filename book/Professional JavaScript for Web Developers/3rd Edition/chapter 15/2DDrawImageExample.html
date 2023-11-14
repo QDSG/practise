@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D DrawImag Example</title>
+    </head>
+    <body>
+        <canvas id="can" width="800" height="400"></canvas>
+        <img id="smiley" src="psc.jpg" border="1" />
+        <input type="button" id="export-but" value="导出">
+        <script>
+            window.onload = function(){
+                var drawing = document.getElementById("can");
+                var but = document.getElementById("export-but");
+                if(drawing.getContext) {
+                    but.onclick = function() {
+                        // 取得图像的数据URL
+                        var imgURL = drawing.toDataURL();
+        
+                        // 显示图像
+                        var image1 = document.createElement("img");
+                        image1.src = imgURL;
+                        document.body.appendChild(image1);
+                    }
+
+                    var context = drawing.getContext("2d");
+
+                    var img = document.images[0];
+                    // 绘制该图像的起点的 x 和 y 坐标
+                    context.drawImage(img, 10, 10);
+                    // 绘制该图像的起点的 x坐标 、 y 坐标、目标宽度、目标高度
+                    context.drawImage(img, 10, 200, 150, 150);
+                    // 要绘制的图像、源图像的 x 坐标、源图像的 y 坐标、源图像的宽度、源图像的高度、目标图像的 x 坐标、目标图像的 y 坐标、目标图像的宽度、目标图像的高度。
+                    context.drawImage(img, 30, 36, 90, 84, 200, 60, 150, 150);
+
+                }             
+            };
+        </script>
+    </body>
+</html>

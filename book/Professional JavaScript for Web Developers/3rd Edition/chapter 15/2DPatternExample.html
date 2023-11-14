@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D DrawImag Example</title>
+    </head>
+    <body>
+        <canvas id="can" width="800" height="800"></canvas>
+        <img id="smiley" src="psc.jpg" border="1" />
+        <input type="button" id="export-but" value="导出">
+        <script>
+            window.onload = function(){
+                var drawing = document.getElementById("can");
+                var but = document.getElementById("export-but");
+                if(drawing.getContext) {
+                    but.onclick = function() {
+                        // 取得图像的数据URL
+                        var imgURL = drawing.toDataURL();
+        
+                        // 显示图像
+                        var image1 = document.createElement("img");
+                        image1.src = imgURL;
+                        document.body.appendChild(image1);
+                    }
+
+                    var context = drawing.getContext("2d");
+
+                    var img = document.images[0],
+                        // 第一个参数是一个 HTML <img>元素，也可以是一个<video>元素，或者另一个<canvas>元素。
+                        // 第二个参数的值与 CSS 的 background-repeat 属性值相同，包括"repeat"、"repeat-x"、"repeat-y"和"no-repeat"。
+                        pattern = context.createPattern(img, "repeat");
+
+                    context.fillStyle = pattern;
+                    context.fillRect(10, 10, 800, 800);
+
+                }             
+            };
+        </script>
+    </body>
+</html>
